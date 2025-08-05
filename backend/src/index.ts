@@ -52,7 +52,7 @@ app.use(cors({
   methods: '*',
   allowedHeaders: '*',
   exposedHeaders: '*',
-  credentials: false,
+  credentials: true,
   preflightContinue: false,
   optionsSuccessStatus: 200
 }));
