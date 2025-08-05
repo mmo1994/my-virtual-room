@@ -40,7 +40,7 @@ const allowedOrigins = [
   'http://127.0.0.1:8080',
   'http://127.0.0.1:5173',
   process.env.FRONTEND_URL, // Production frontend URL
-].filter(Boolean);
+];
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -48,6 +48,8 @@ app.use(cors({
     
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
+
+    logger.info('CORS Origin:', origin);
     
     // Check if origin is in allowed list
     if (allowedOrigins.includes(origin)) {
