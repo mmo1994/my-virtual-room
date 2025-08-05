@@ -11,5 +11,8 @@
       "src": "/(.*)",
       "dest": "src/api/index.ts"
     }
-  ]
+  ],
+  "env": {
+    "VERCEL": "1"
+  }
 }
