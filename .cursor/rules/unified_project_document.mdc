@@ -1,0 +1,219 @@
+---
+description: Apply these rules when making changes to the project
+globs:
+alwaysApply: true
+---
+
+Update this rule if user requested changes to the project requirement, etc.
+# Unified Project Documentation
+
+## Project Requirements Document
+
+### 1. Project Overview
+
+Spacify is a desktop-only web platform that lets homeowners, shoppers, and designers upload a photo of their room and see 2D mockups of furniture items overlaid in real time. By providing a brief style description—like “minimalist” or “warm terracotta”—the app’s AI analysis suggests pieces that match the space. Users can hover for details and click through to retailer sites via affiliate links. This visual approach reduces uncertainty about scale, color, and style before buying.
+
+We’re building Spacify to solve the common pain point of “Will this furniture actually look and fit in my room?” Our success criteria for version 1.0 are simple: users can upload room images (up to 15 MB in JPG, PNG, WebP, or HEIC), receive AI-driven style recommendations with 2D overlays, compare before/after views, and click through to retailers—all in under two seconds of load time. We’ll measure engagement by upload counts, before/after toggles used, affiliate click-through rates, and survey feedback.
+
+### 2. In-Scope vs. Out-of-Scope
+
+**In-Scope (Version 1.0):**
+
+*   Desktop-only web interface (no responsive mobile or tablet layout yet)
+*   User registration, email/password login, password reset, profile settings
+*   Room photo upload (JPG, PNG, WebP, HEIC; max 15 MB; no cropping or resizing)
+*   AI-powered style recommendations with 2D furniture overlays
+*   Before/After toggle and side-by-side view
+*   Save original and enhanced images in user projects
+*   Clickable affiliate links to retailer websites
+*   Minimalist, warm UI theme using brand colors (#FDF6EF, #C86B43, #1E293B)
+*   Hosting, image storage, and metadata on Vercel (with Vercel Postgres)
+
+**Out-of-Scope (Deferred):**
+
+*   Full 3D or AR furniture placement
+*   Mobile/tablet-optimized layouts
+*   Built-in image cropping, resizing, or advanced editing tools
+*   Multiple user roles or team collaboration
+*   Custom furniture database (initially rely on third-party APIs)
+*   Subscription or premium fee model (affiliate commissions only)
+
+### 3. User Flow
+
+When someone arrives on Spacify’s soft-cream homepage, they see the dark-navy logo on the left and a warm terracotta “Sign up” button on the right. Clicking that button opens a simple form for email and password; after confirming their email, they land on a dashboard showing any saved projects and a prominent “Create New Project” button.
+
+Inside a project, users upload their room photo (up to 15 MB) and type a style note like “mid-century modern.” The app quickly analyzes the image and returns it with overlaid furniture mockups that match the style. Users can hover for name, price, and brief details or click to visit the retailer’s site. A “Before/After” switch toggles between the raw photo and the decorated version. Saving stores both images in their account under “Saved Projects.”
+
+### 4. Core Features
+
+*   **Authentication & User Accounts**: Email/password signup, confirmation link, login, reset password, profile updates.
+*   **Room Photo Upload**: Accepts JPG, PNG, WebP, HEIC up to 15 MB with client-side size checks; no cropping tools.
+*   **AI-Powered Style Recommendations**: Third-party AI/image-analysis service suggests furniture based on uploaded photo and user’s style text.
+*   **2D Overlay Visualization**: Draggable, zoomable mockups placed in correct perspective, matching site’s rounded-corner aesthetic.
+*   **Interactive Tooltips & Affiliate Links**: Hover or click on items to reveal product info and price; click sends users to retailer in a new tab.
+*   **Before/After Toggle**: Seamless switch or side-by-side comparison between original and styled images.
+*   **Project Management**: Create, name, save, and revisit design projects; view thumbnails and timestamps.
+*   **Affiliate Commission Tracking**: Record click-throughs via integrated third-party APIs for revenue.
+*   **Branding & UI**: Minimalist, warm theme with specified colors, rounded fonts, and layout consistency.
+
+### 5. Tech Stack & Tools
+
+*   **Frontend**: Next.js (React) for server-rendered pages and fast client interactivity.
+*   **Backend**: Node.js + Next.js API routes for serverless functions.
+*   **Authentication**: NextAuth.js handles secure email/password flows.
+*   **Storage & Hosting**: Vercel for deployment and image storage, Vercel Postgres for metadata.
+*   **AI/Image Analysis**: Third-party service (e.g., OpenAI Vision or AWS Rekognition) analyzes room photos and style.
+*   **Affiliate Integration**: REST calls to retailer APIs for catalog data and click tracking.
+*   **Design & IDE**: Lovable.dev for initial prototypes, Cursor IDE for AI-assisted coding, Replit for collaboration and testing.
+
+### 6. Non-Functional Requirements
+
+*   **Performance**: Initial page load ≤ 2 s on desktop broadband; overlay rendering ≤ 1 s post-AI response.
+*   **Scalability**: Support 1,000+ concurrent users via Vercel’s autoscaling serverless functions.
+*   **Security & Compliance**: HTTPS everywhere, secure cookies, OWASP Top 10 protections, GDPR-ready with consent and data deletion.
+*   **Usability & Accessibility**: WCAG 2.1 AA compliance—color contrast, keyboard nav, alt text on images.
+
+### 7. Constraints & Assumptions
+
+*   Desktop-only; mobile/tablet views come later.
+*   AI/image analysis depends on third-party API uptime and performance.
+*   No in-app cropping/resizing; users upload pre-prepared images.
+*   Single user role—no designer or admin permissions differences.
+*   Affiliate API rate limits and terms must be respected.
+
+### 8. Known Issues & Potential Pitfalls
+
+*   **Perspective & Scale Accuracy**: 2D overlays may misalign with room perspective. Mitigation: simple slider control to adjust scale.
+*   **Affiliate API Downtime**: Rate limits or outages could break item lookup. Mitigation: cache popular items and show fallback messages.
+*   **Large File Uploads**: Fifteen-megabyte images can slow uploads. Mitigation: client-side file size validation and progress indicators.
+*   **AI Service Latency/Errors**: Slow or failed analysis calls. Mitigation: retry logic, loading messages, or queuing.
+
+## App Flow Document
+
+### Onboarding and Sign-In/Sign-Up
+
+When a new user lands on Spacify’s homepage, they immediately see the logo in the top-left corner and a terracotta “Sign up” button in the top-right. Clicking the button brings up a simple form requesting email and password. Upon submission, the platform sends a confirmation link. Once the user clicks it, they’re automatically logged in. Forgotten passwords are handled via a “Reset password” link on the login page that emails a one-time reset link. Signing out is as easy as clicking the “Log out” link in the header menu.
+
+### Main Dashboard or Home Page
+
+After logging in, users are taken to a clean dashboard over a soft-cream background, showing thumbnails of any saved projects with names and timestamps. A prominent “Create New Project” button sits at the top. The sidebar contains links to “Saved Projects,” “Profile Settings,” and “Log out.” The header repeats the logo and user’s avatar. From here, clicking “Create New Project” starts the core design flow.
+
+### Detailed Feature Flows and Page Transitions
+
+Inside a project workspace, users first upload their room image via a drag-and-drop or file picker widget that accepts JPG, PNG, WebP, or HEIC up to 15 MB. Below that, they type a brief description of their style. On submission, the page shows a loading spinner while the AI service analyzes the room. Once done, the same view refreshes to display the room photo with draggable, zoomable furniture overlays. Hovering or clicking an overlay reveals product details and an affiliate link. Toggling the “Before”/“After” switch replaces the overlaid scene with the original. Clicking “Save” commits both images to the user’s saved projects and returns them to the dashboard.
+
+### Settings and Account Management
+
+Users access “Profile Settings” via the sidebar. On that page, they can update their email, change their password, or adjust notification preferences. After saving changes, a confirmation message appears briefly. Users then click “Back to Dashboard” in the header or sidebar to return to their projects.
+
+### Error States and Alternate Paths
+
+If the user uploads a file over 15 MB or in an unsupported format, an inline error message appears next to the upload field, explaining accepted formats and size limits. If the AI service times out or returns an error, a banner at the top suggests retrying or contacting support. Lost connectivity triggers a full-page message prompting the user to reconnect, with an option to retry the last operation. Unauthorized access to any page redirects to the login screen with an explanatory note.
+
+### Conclusion and Overall App Journey
+
+From landing on the homepage to saving a furnished room, Spacify guides users in a few clear steps: signup, project creation, photo upload, style input, AI processing, interactive previews, and saving. Each step flows naturally to the next, ensuring users feel confident from their first upload to browsing affiliate links for purchase.
+
+## Tech Stack Document
+
+### Frontend Technologies
+
+*   Next.js (React framework) for fast server-side rendering and seamless client transitions.
+*   React functional components with hooks for modularity and state handling.
+*   NextAuth.js for secure, customizable authentication flows.
+*   CSS Modules with SCSS for scoped, maintainable styling and theme variables.
+*   Next/Image component for automatic image optimization and lazy loading.
+
+### Backend Technologies
+
+*   Node.js with Next.js API routes for serverless functions handling auth, uploads, and AI calls.
+*   Vercel Postgres for storing user profiles, project metadata, and affiliate tracking data.
+*   REST integrations with third-party AI/image-analysis services and affiliate retailer APIs.
+
+### Infrastructure and Deployment
+
+*   Vercel for continuous deployment, serverless hosting, and global CDN.
+*   GitHub for version control, with protected branches and pull request workflows.
+*   Automated preview deployments on each pull request for QA and design review.
+
+### Third-Party Integrations
+
+*   AI/Image Analysis Service (e.g., OpenAI Vision or AWS Rekognition) analyzes room photos and suggests matching furniture.
+*   Affiliate Retailer APIs fetch product data and track click-throughs for revenue sharing.
+*   Email service (e.g., SendGrid) for confirmation links and password resets.
+
+### Security and Performance Considerations
+
+*   HTTPS enforced on all endpoints, secure and HttpOnly cookies for sessions.
+*   Input validation and sanitization on uploads and API calls to prevent injections.
+*   Rate limiting on critical API routes to guard against abuse.
+*   Lazy loading and code-splitting to reduce initial bundle size and speed up page loads.
+
+### Conclusion and Overall Tech Stack Summary
+
+This stack blends Next.js and Node.js for a fast, serverless architecture that auto-scales on Vercel. We rely on proven third-party AI and affiliate APIs to handle complex image analysis and revenue tracking, letting the team focus on seamless UX. The result is a secure, performant platform that meets Spacify’s goals with minimal overhead.
+
+## Frontend Guidelines Document
+
+### Frontend Architecture
+
+Spacify’s frontend is built with Next.js, using file-based routing to define pages like `/login`, `/dashboard`, and `/project/[id]`. React functional components keep the UI modular, each in its own folder with scoped CSS Modules and tests. Server-side rendering for public pages speeds up first loads, while client-side navigation ensures smooth interactions. This structure supports scalability, easy maintenance, and quick onboarding of new developers.
+
+### Design Principles
+
+We follow four key principles:
+
+*   **Usability**: Clear buttons, intuitive forms, and hover states to guide users.
+*   **Accessibility**: WCAG 2.1 AA compliance for contrast, keyboard navigation, and alt text.
+*   **Responsiveness**: While desktop-only in v1, layouts adapt to common desktop sizes and gracefully degrade.
+*   **Consistency**: Reusable components and style variables ensure a unified look throughout.
+
+### Styling and Theming
+
+We use CSS Modules with SCSS, defining brand colors in a global `_variables.scss` file. The palette includes cream (`#FDF6EF`), terracotta (`#C86B43`), and dark navy (`#1E293B`). Fonts are a clean, rounded sans-serif for headers and body text. Components feature soft, rounded corners and subtle shadows to reinforce the warm, minimalist feel. Dark mode inverts to white text and icons on dark backgrounds.
+
+### Component Structure
+
+Each component lives in `components/ComponentName/` with three files: `ComponentName.tsx`, `ComponentName.module.scss`, and `ComponentName.test.tsx`. This keeps logic, styles, and tests together. At the top level, we group by feature: `Auth/`, `Dashboard/`, `Project/`, and `UI/` for shared elements like buttons and modals.
+
+### State Management
+
+Local UI state uses React’s `useState` and `useReducer` hooks. Global state—such as user session and project data—uses React Context combined with the `useSWR` hook for data fetching and caching. This lightweight approach avoids heavy external libraries while keeping state predictable.
+
+### Routing and Navigation
+
+Next.js file-based routing maps URLs to pages. Protected routes (dashboard, project pages) use a higher-order component that checks session state from NextAuth.js and redirects to `/login` if needed. The header and sidebar provide links for main sections.
+
+### Performance Optimization
+
+We employ dynamic imports (`next/dynamic`) for large components like the image uploader. The `next/image` component handles lazy loading and responsive sizing. CSS and JS bundles are automatically code-split by Next.js, keeping initial loads fast.
+
+### Testing and Quality Assurance
+
+*   **Unit Tests**: Jest and React Testing Library for component logic and UI assertions.
+*   **Integration Tests**: Mock API calls with MSW (Mock Service Worker) to verify interactions end-to-end.
+*   **End-to-End Tests**: Cypress scripts simulate user flows like signup, upload, and save to catch regressions.
+
+### Conclusion and Overall Frontend Summary
+
+Spacify’s frontend combines Next.js, React, and scoped SCSS modules for a modular, performant, and accessible user experience. Our design and state patterns ensure rapid development, consistent UI, and easy maintenance, all aligned with the project’s minimalist, warm brand identity.
+
+## Implementation Plan
+
+1.  **Project Setup**: Initialize Next.js repo on GitHub, configure TypeScript, ESLint, and Prettier.
+2.  **Authentication**: Integrate NextAuth.js with email/password, build signup, login, and reset pages.
+3.  **Dashboard Layout**: Create dashboard page with sidebar, header, and “Create New Project” button.
+4.  **Image Upload**: Implement drag-and-drop upload widget with client-side size/format checks.
+5.  **AI Integration**: Connect to chosen AI/image-analysis API; build serverless function to send images and style text, return overlay data.
+6.  **Overlay UI**: Build component to render mockups on photos, draggable and zoomable, with tooltips.
+7.  **Before/After Toggle**: Implement toggle switch component for switching or side-by-side layout.
+8.  **Project Persistence**: Save original and styled images plus metadata in Vercel Postgres; build “Saved Projects” view.
+9.  **Affiliate Links**: Hook up clickable overlays to retailer API endpoints, track click-throughs in the database.
+10. **Profile Settings**: Build settings page for email, password, and notifications.
+11. **Styling & Theming**: Apply brand colors, fonts, and logo across all pages; test dark mode.
+12. **Testing**: Write unit, integration, and e2e tests for core flows.
+13. **Performance & Security**: Audit bundle sizes, add rate limiting, and enable HTTPS.
+14. **Deployment**: Configure Vercel for production, test preview builds, and launch v1.0.
+15. **Monitoring & Feedback**: Set up analytics for usage tracking and prepare for user surveys.
+
+This plan lays out the high-level steps needed to build, secure, test, and launch Spacify’s first version in a clear, actionable sequence.

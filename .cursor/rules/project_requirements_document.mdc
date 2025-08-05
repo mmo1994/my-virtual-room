@@ -1,0 +1,134 @@
+---
+description: Apply these rules when making changes to the project
+globs:
+alwaysApply: true
+---
+
+Update this rule if user requested changes to the project requirement, etc.
+# Spacify: Project Requirements Document
+
+## 1. Project Overview
+
+Spacify is a web-based platform that helps homeowners, shoppers, and designers preview furniture in their real spaces. By uploading a photo of their room and describing their style, users see 2D overlays of recommended furniture items right on their walls, floors, or corners. This visual approach reduces guesswork and boosts confidence when making design choices or purchases.
+
+We’re building Spacify to solve the common pain point of “Will this piece actually fit and look good in my room?” Our key objectives for the first version are:
+
+*   Enable users to upload room images (up to 15 MB in JPG, PNG, WebP, HEIC).
+*   Deliver AI-powered, style-matched furniture overlays.
+*   Offer a Before/After toggle for quick comparison.
+*   Send users directly to retailer sites via affiliate links, driving revenue for Spacify.
+
+Success will be measured by user engagement (number of uploads, toggles used), click‐through rates on affiliate links, and positive feedback in user surveys.
+
+## 2. In-Scope vs. Out-of-Scope
+
+### In-Scope (Version 1.0)
+
+*   Desktop-only web application (no mobile app or responsive mobile layout yet).
+*   User registration, login, and profile management (single user role).
+*   Room photo uploads (JPG, PNG, WebP, HEIC; max 15 MB; no in-app cropping).
+*   AI-powered style recommendations with 2D overlay of furniture items.
+*   Before/After view toggle and side-by-side comparison.
+*   Saving projects, original + transformed images in user’s account.
+*   Affiliate API integration: click an item → retailer website.
+*   Minimalist, warm UI theme using brand colors (#FDF6EF, #C86B43, #1E293B).
+*   Hosting and storage on Vercel (images + metadata).
+
+### Out-of-Scope (Planned Later)
+
+*   Full 3D or AR furniture placement.
+*   Mobile or tablet‐optimized layouts.
+*   Built-in image cropping, resizing, or advanced editing.
+*   Multiple user roles or team collaboration features.
+*   Custom furniture database (initially rely on third-party APIs).
+*   Subscription or premium fee model (currently affiliate-only).
+
+## 3. User Flow
+
+When first arriving at the soft-cream homepage, the visitor sees the dark-navy Spacify logo on the left and a terracotta “Sign up” button on the right. Clicking “Sign up” opens a simple form for email and password. After email confirmation, the user lands on their dashboard, where they see any saved projects and a “Create New Project” button.
+
+Inside a project workspace, the user uploads their room photo (up to 15 MB) and enters a short style description (e.g., “mid-century modern”). The AI engine takes a moment to process, then returns the same room with 2D furniture overlays that match the desired aesthetic. Users can hover for product details or click to visit retailer sites. A toggle labeled “Before”/“After” swaps between the original and overlaid views. When happy, users click “Save,” storing both images under “Saved Projects” in their dashboard.
+
+## 4. Core Features
+
+*   **Authentication & User Accounts**\
+    Email/password signup, email confirmation, login, password reset, profile settings.
+*   **Room Photo Upload**\
+    Accept JPG, PNG, WebP, HEIC (≤ 15 MB), no cropping or resizing tools.
+*   **AI-Powered Style Recommendations**\
+    Third-party AI/image-analysis service analyzes room and style text, returns curated furniture items.
+*   **2D Overlay Visualization**\
+    Place furniture mockups on photo, draggable or zoomable to adjust scale and placement.
+*   **Interactive Item Tooltips & Affiliate Links**\
+    Hover or click on overlay items to see name, price, and “Buy” link to retailer site.
+*   **Before/After View Toggle**\
+    Seamless switch between original and styled image, also supports side-by-side mode.
+*   **Project Management**\
+    Create, name, save, and revisit design projects; view thumbnails, timestamps, and open for edits.
+*   **Affiliate Commission Tracking**\
+    Record click-throughs and referrals via integrated third-party retailer APIs.
+*   **Branding & UI**\
+    Minimalist/warm theme with specified colors, fonts, logo, and layout guidelines.
+
+## 5. Tech Stack & Tools
+
+*   **Frontend**: Next.js (React)
+
+*   **Backend**: Node.js + Next.js API routes
+
+*   **Authentication**: NextAuth.js (email/password)
+
+*   **Storage & Hosting**: Vercel (images + metadata), Vercel Postgres
+
+*   **AI/Image Analysis**: Third-party service (e.g., OpenAI Vision, AWS Rekognition)
+
+*   **Affiliate Integration**: Retailer APIs via REST calls
+
+*   **Design/IDE**:
+
+    *   Lovable.dev (prototype generation)
+    *   Cursor IDE (AI-assisted coding)
+    *   Replit (collaboration, testing)
+
+## 6. Non-Functional Requirements
+
+*   **Performance**:
+
+    *   Initial page load ≤ 2 seconds on broadband desktop.
+    *   Overlay rendering ≤ 1 second per image after AI processing completes.
+
+*   **Scalability**:
+
+    *   Support at least 1,000 concurrent users with Vercel’s serverless autoscaling.
+
+*   **Security & Compliance**:
+
+    *   HTTPS everywhere, secure cookie flags, OWASP Top 10 mitigations.
+    *   GDPR-ready: consent on signup, data deletion on request.
+
+*   **Usability & Accessibility**:
+
+    *   WCAG 2.1 AA compliance for color contrast, keyboard navigation, and alt text on images.
+
+## 7. Constraints & Assumptions
+
+*   Desktop-only; no mobile or tablet layouts initially.
+*   AI/image analysis relies on constant third-party API availability and performance.
+*   No built-in cropping/resizing—users must upload pre-cropped photos.
+*   All users share identical permissions—no admin or designer-specific roles.
+*   Affiliate API rate limits and terms will govern click tracking.
+
+## 8. Known Issues & Potential Pitfalls
+
+*   **Perspective & Scale Accuracy**:\
+    2D overlays may not perfectly match room perspective; provide a simple scale-adjust handle to mitigate.
+*   **Affiliate API Limits**:\
+    Hit rate limits or downtime; implement caching of popular items and graceful error messages.
+*   **Large File Handling**:\
+    15 MB uploads can slow time to first byte. Enforce client-side file size checks and show upload progress bars.
+*   **AI Service Latency**:\
+    If the image-analysis API is slow or returns errors, fallback to a “try again” prompt or queue system.
+*   **Data Storage Costs**:\
+    Storing high-res images can grow quickly in Vercel; set clear retention policies or implement periodic clean-up scripts.
+
+This document defines all core functionality, flows, and constraints for Spacify’s first release. It’s designed to guide the AI model and engineering teams through every detail—leaving zero ambiguity for future technical documents or implementation steps.
