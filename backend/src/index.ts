@@ -9,7 +9,7 @@ import path from 'path';
 import { connectDatabase/*, disconnectDatabase*/ } from './config/database';
 import { logger } from './config/logger';
 import { globalErrorHandler } from './middleware/errorHandler';
-import { defaultRateLimit } from './middleware/rateLimiter';
+// import { defaultRateLimit } from './middleware/rateLimiter';
 
 // Import routes
 import authRoutes from './routes/auth';
@@ -26,7 +26,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Trust proxy headers (required for accurate rate limiting behind proxies like Vercel)
-app.set('trust proxy', true);
+// app.set('trust proxy', true);
 
 // Completely disable security restrictions for development
 app.use(helmet({
