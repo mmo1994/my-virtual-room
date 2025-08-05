@@ -125,11 +125,11 @@ try {
 }
 
 // Start server only in development (not for Vercel deployment)
-if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
-  app.listen(PORT, () => {
-    logger.info(`Server running on port ${PORT}`);
-    logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
-  });
-}
+// if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+app.listen(PORT, () => {
+  logger.info(`Server running on port ${PORT}`);
+  logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
+});
+// }
 
 export default app; 
