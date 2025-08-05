@@ -114,12 +114,15 @@ app.use(globalErrorHandler);
 //   });
 // }
 
-// Start server
+// Initialize database connection
 connectDatabase().catch(err => logger.error('DB connection failed on init:', err));
 
-app.listen(PORT, () => {
-  logger.info(`Server running on port ${PORT}`);
-  logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+// Start server only in development (not for Vercel deployment)
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    logger.info(`Server running on port ${PORT}`);
+    logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  });
+}
 
 export default app; 
