@@ -25,6 +25,9 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy headers (required for accurate rate limiting behind proxies like Vercel)
+app.set('trust proxy', true);
+
 // Security middleware - configure helmet to allow images
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" },
