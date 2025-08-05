@@ -33,39 +33,8 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" },
   contentSecurityPolicy: false // Disable CSP for development
 }));
-// CORS configuration - allow frontend and development origins
-const allowedOrigins = [
-  'http://localhost:8080',  // Frontend dev server
-  'http://localhost:5173',  // Alternative Vite port
-  'http://127.0.0.1:8080',
-  'http://127.0.0.1:5173',
-  process.env.FRONTEND_URL, // Production frontend URL
-].filter(Boolean);
-
-app.use(cors({
-  origin: function (origin, callback) {
-    console.log('CORS Origin:', origin);
-    
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    // Check if origin is in allowed list
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    
-    // In development, allow all origins
-    if (process.env.NODE_ENV === 'development') {
-      return callback(null, true);
-    }
-    
-    return callback(new Error('Not allowed by Sargis CORS'));
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  exposedHeaders: ['X-Total-Count', 'X-Page-Count']
-}));
+// Allow all origins - CORS disabled
+app.use(cors());
 
 // Rate limiting
 app.use(defaultRateLimit);
