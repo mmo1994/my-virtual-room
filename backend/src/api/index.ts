@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import path from 'path';
 
-import { connectDatabase/*, disconnectDatabase*/ } from '../config/database';
+// import { connectDatabase/*, disconnectDatabase*/ } from '../config/database';
 import { logger } from '../config/logger';
 import { globalErrorHandler } from '../middleware/errorHandler';
 import { defaultRateLimit } from '../middleware/rateLimiter';
