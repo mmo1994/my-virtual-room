@@ -28,49 +28,49 @@ const PORT = process.env.PORT || 3001;
 // Trust proxy headers (required for accurate rate limiting behind proxies like Vercel)
 app.set('trust proxy', true);
 
-// Security middleware - configure helmet to allow images
+// Completely disable security restrictions for development
 app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" },
-  contentSecurityPolicy: false // Disable CSP for development
+  crossOriginResourcePolicy: false,
+  contentSecurityPolicy: false,
+  crossOriginOpenerPolicy: false,
+  crossOriginEmbedderPolicy: false,
+  originAgentCluster: false,
+  referrerPolicy: false,
+  strictTransportSecurity: false,
+  xContentTypeOptions: false,
+  xDnsPrefetchControl: false,
+  xDownloadOptions: false,
+  xFrameOptions: false,
+  xPermittedCrossDomainPolicies: false,
+  xPoweredBy: false,
+  xXssProtection: false
 }));
-// CORS configuration - allow frontend and development origins
-const allowedOrigins = [
-  'http://localhost:8080',  // Frontend dev server
-  'http://localhost:5173',  // Alternative Vite port
-  'http://127.0.0.1:8080',
-  'http://127.0.0.1:5173',
-  process.env.FRONTEND_URL, // Production frontend URL
-];
 
+// Allow all origins, methods, and headers
 app.use(cors({
-  origin: function (origin, callback) {
-    console.log('CORS Origin:', origin);
-    
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-
-    logger.info('CORS Origin:', origin);
-    
-    // Check if origin is in allowed list
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    
-    // In development, allow all origins
-    if (process.env.NODE_ENV === 'development') {
-      return callback(null, true);
-    }
-    
-    return callback(new Error('Not allowed by Sargis CORS'));
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  exposedHeaders: ['X-Total-Count', 'X-Page-Count']
+  origin: '*',
+  methods: '*',
+  allowedHeaders: '*',
+  exposedHeaders: '*',
+  credentials: false,
+  preflightContinue: false,
+  optionsSuccessStatus: 200
 }));
+
+// Add manual CORS headers as backup
+app.use((_req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', '*');
+  res.header('Access-Control-Allow-Headers', '*');
+  res.header('Access-Control-Expose-Headers', '*');
+  next();
+});
+
+// Disable rate limiting for development
+app.use(defaultRateLimit);
 
 // Rate limiting
-app.use(defaultRateLimit);
+// app.use(defaultRateLimit);
 
 // Body parsing middleware
 app.use(express.json({ limit: '15mb' }));
