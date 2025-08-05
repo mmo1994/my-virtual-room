@@ -115,7 +115,7 @@ app.use(globalErrorHandler);
 // }
 
 // Initialize database connection
-connectDatabase().catch(err => logger.error('DB connection failed on init:', err));
+// connectDatabase().catch(err => logger.error('DB connection failed on init:', err));
 
 // Start server only in development (not for Vercel deployment)
 if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
