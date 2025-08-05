@@ -7,17 +7,17 @@ import dotenv from 'dotenv';
 import path from 'path';
 
 // import { connectDatabase/*, disconnectDatabase*/ } from '../config/database';
-import { logger } from '../config/logger';
-import { globalErrorHandler } from '../middleware/errorHandler';
-import { defaultRateLimit } from '../middleware/rateLimiter';
+import { logger } from './config/logger';
+import { globalErrorHandler } from './middleware/errorHandler';
+import { defaultRateLimit } from './middleware/rateLimiter';
 
 // Import routes
-import authRoutes from '../routes/auth';
-import userRoutes from '../routes/users';
-import projectRoutes from '../routes/projects';
-import furnitureRoutes from '../routes/furniture';
-import uploadRoutes from '../routes/upload';
-import healthRoutes from '../routes/health';
+import authRoutes from './routes/auth';
+import userRoutes from './routes/users';
+import projectRoutes from './routes/projects';
+import furnitureRoutes from './routes/furniture';
+import uploadRoutes from './routes/upload';
+import healthRoutes from './routes/health';
 
 // Load environment variables
 dotenv.config();
