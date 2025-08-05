@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import path from 'path';
 
-// import { connectDatabase/*, disconnectDatabase*/ } from '../config/database';
+import { connectDatabase/*, disconnectDatabase*/ } from './config/database';
 import { logger } from './config/logger';
 import { globalErrorHandler } from './middleware/errorHandler';
 import { defaultRateLimit } from './middleware/rateLimiter';
@@ -115,7 +115,11 @@ app.use(globalErrorHandler);
 // }
 
 // Initialize database connection
-// connectDatabase().catch(err => logger.error('DB connection failed on init:', err));
+try {
+  connectDatabase();
+} catch (error) {
+  logger.error('Error connecting to database:', error);
+}
 
 // Start server only in development (not for Vercel deployment)
 if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
