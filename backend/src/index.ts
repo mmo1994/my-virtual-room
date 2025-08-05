@@ -26,7 +26,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Trust proxy headers (required for accurate rate limiting behind proxies like Vercel)
-// app.set('trust proxy', true);
+app.set('trust proxy', true);
 
 // Completely disable security restrictions for development
 app.use(helmet({
