@@ -9,16 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/src/api/index.ts"
+      "dest": "src/api/index.ts"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production",
-    "VERCEL": "1"
-  },
-  "functions": {
-    "src/api/index.ts": {
-      "maxDuration": 30
-    }
-  }
+  ]
 }

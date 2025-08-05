@@ -5,8 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "node src/api/index.js",
     "dev": "nodemon src/api/index.ts",
+    "vercel-build": "echo 'No build step required for TypeScript'",
     "db:migrate": "node dist/scripts/migrate.js",
     "db:seed": "node dist/scripts/seed.js",
     "lint": "eslint src/**/*.ts",
